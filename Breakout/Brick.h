@@ -3,7 +3,7 @@
 
 class Brick {
 public:
-    Brick(float x, float y, float width, float height);
+    Brick(float x, float y, float width, float height, sf::Color color);
     void render(sf::RenderWindow& window);
     sf::FloatRect getBounds() const;
 

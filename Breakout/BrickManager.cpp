@@ -4,6 +4,13 @@
 BrickManager::BrickManager(sf::RenderWindow* window, GameManager* gameManager)
     : _window(window), _gameManager(gameManager)
 {
+    _brickColors = {
+        sf::Color::Red,
+        sf::Color(255, 140, 0), // RGB vals for orange
+        sf::Color::Yellow,
+        sf::Color::Green,
+        sf::Color::Cyan
+    };
 }
 
 void BrickManager::createBricks(int rows, int cols, float brickWidth, float brickHeight, float spacing)
@@ -15,10 +22,12 @@ void BrickManager::createBricks(int rows, int cols, float brickWidth, float bric
         leftEdge = _window->getSize().x / 2 - ((cols / 2.0f - 0.5f) * brickWidth + (cols / 2.0f) * spacing);
 
     for (int i = 0; i < rows; ++i) {
+        // i % _brickColors.size = branchless way to implement looping over the vector when rows outnumber colours
+        sf::Color rowColor = _brickColors[i % _brickColors.size()];
         for (int j = 0; j < cols; ++j) {
             float x = j * (brickWidth + spacing) + leftEdge;
             float y = i * (brickHeight + spacing) + TOP_PADDING;
-            _bricks.emplace_back(x, y, brickWidth, brickHeight);
+            _bricks.emplace_back(x, y, brickWidth, brickHeight, rowColor);
         }
     }
 }

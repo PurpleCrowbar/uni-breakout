@@ -13,6 +13,7 @@ public:
     int checkCollision(sf::CircleShape& ball, sf::Vector2f& direction);
 
 private:
+    std::vector<sf::Color> _brickColors;
     std::vector<Brick> _bricks;
     sf::RenderWindow* _window;
 
