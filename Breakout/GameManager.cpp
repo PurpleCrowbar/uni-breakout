@@ -6,7 +6,8 @@
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
     _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
-    _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f)
+    _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f), _isShaking(false), _shakeDuration(0.8f),
+    _shakeDurationRemaining(0.f), _shakeMagnitude(8.f)
 {
     _font.loadFromFile("font/montS.ttf");
     _masterText.setFont(_font);
@@ -34,7 +35,6 @@ void GameManager::update(float dt)
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
     
-
     if (_lives <= 0)
     {
         _masterText.setString("Game over.");
@@ -44,6 +44,31 @@ void GameManager::update(float dt)
     {
         _masterText.setString("Level completed.");
         return;
+    }
+    // screen shaking
+    if (_isShaking)
+    {
+        _shakeDurationRemaining -= dt;
+        if (_shakeDurationRemaining > 0)
+        {
+            float decay = _shakeDurationRemaining / _shakeDuration;
+            // decay^2 so that the decay is nonlinear. it decays quickly at first, then slows to finish smoothly
+            float currentMagnitude = _shakeMagnitude * decay * decay;
+
+            // get rand float between 0 and 1, subtract 0.5 so now between -0.5 and +0.5, and double to get range
+            // between -1 and +1. Then multiply by currentMagnitude to get diminishing shake offset
+            float offsetX = (std::rand() % 100 / 100.f - 0.5f) * 2 * currentMagnitude;
+            float offsetY = (std::rand() % 100 / 100.f - 0.5f) * 2  * currentMagnitude;
+
+            sf::View shakenView = _originalView;
+            shakenView.move(offsetX, offsetY);
+            _window->setView(shakenView);
+        }
+        else
+        {
+            _isShaking = false;
+            _window->setView(_originalView);
+        }
     }
     // pause and pause handling
     if (_pauseHold > 0.f) _pauseHold -= dt;
@@ -91,7 +116,11 @@ void GameManager::loseLife()
     _lives--;
     _ui->lifeLost(_lives);
 
-    // TODO screen shake.
+    // begin screen shake
+    _isShaking = true;
+    _shakeDurationRemaining = _shakeDuration;
+    // save normal view (to return to after shaking is over)
+    _originalView = _window->getView();
 }
 
 void GameManager::render()

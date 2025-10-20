@@ -34,10 +34,17 @@ private:
     int _lives;
     bool _levelComplete;
     std::pair<POWERUPS, float> _powerupInEffect;
+    // Screen shake
+    bool _isShaking;
+    float _shakeDuration; // total time to shake
+    float _shakeDurationRemaining; // time shaken so far
+    float _shakeMagnitude;
+    sf::View _originalView;
 
     sf::Font _font;
     sf::Text _masterText;
 
+    // Pointers
     sf::RenderWindow* _window;
     Paddle* _paddle;
     Ball* _ball;
