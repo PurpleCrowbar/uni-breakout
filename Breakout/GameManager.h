@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+
+#include "AudioManager.h"
 #include "CONSTANTS.h"
 #include "Paddle.h"
 #include "Ball.h"
@@ -48,6 +50,7 @@ private:
     sf::RenderWindow* _window;
     Paddle* _paddle;
     Ball* _ball;
+    AudioManager* _audioManager;
     BrickManager* _brickManager;
     PowerupManager* _powerupManager;
     MessagingSystem* _messagingSystem;

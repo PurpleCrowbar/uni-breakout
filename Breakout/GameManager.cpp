@@ -19,10 +19,11 @@ GameManager::GameManager(sf::RenderWindow* window)
 void GameManager::initialize()
 {
     _paddle = new Paddle(_window);
-    _brickManager = new BrickManager(_window, this);
-    _messagingSystem = new MessagingSystem(_window);
     _ball = new Ball(_window, 400.0f, this); 
+    _audioManager = new AudioManager();
+    _brickManager = new BrickManager(_window, this);
     _powerupManager = new PowerupManager(_window, _paddle, _ball);
+    _messagingSystem = new MessagingSystem(_window);
     _ui = new UI(_window, _lives, this);
 
     // Create bricks
@@ -115,6 +116,7 @@ void GameManager::loseLife()
 {
     _lives--;
     _ui->lifeLost(_lives);
+    _audioManager->playSoundFromOffset("impact", sf::seconds(0.25f));
 
     // begin screen shake
     _isShaking = true;
