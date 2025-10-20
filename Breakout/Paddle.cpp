@@ -13,24 +13,19 @@ Paddle::~Paddle()
 {
 }
 
-void Paddle::moveLeft(float dt)
+void Paddle::followMouse(sf::RenderWindow* window)
 {
-    float position = _sprite.getPosition().x;
+    float targetXPos = sf::Mouse::getPosition(*window).x;
+    // moving the paddle 50% to the left because otherwise it follows the mouse pointer on the paddle's left edge
+    targetXPos -= _width / 2.0f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && position > 0)
-    {
-        _sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
-    }
-}
+    // keeping paddle inside window (combines bounds checks from old functions)
+    if (targetXPos < 0) // left edge of window
+        targetXPos = 0;
+    else if (targetXPos > window->getSize().x - _width) // right edge of window
+        targetXPos = window->getSize().x - _width;
 
-void Paddle::moveRight(float dt)
-{
-    float position = _sprite.getPosition().x;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && position < _window->getSize().x - _width)
-    {
-        _sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
-    }
+    _sprite.setPosition(targetXPos, _sprite.getPosition().y);
 }
 
 void Paddle::update(float dt)
