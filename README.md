@@ -27,9 +27,17 @@ fire ball (green)
 * GameLoop
 * Better ball physics (Box2D)
 * Leaderboards
-* More ball types (e.g., multiball, sticky ball [where you shoot the ball from the paddle every time], tiny ball, big ball, brick-tracking ball)
+* More ball types (e.g., multiball, sticky ball [where you shoot the ball from the paddle every time], tiny ball, big ball, brick-tracking ball)
 * Sounds with increasing tone between bounces.
 * Implement commentary with calls to an LLM such as LLama
 
 # Time Details and Changelist
-<Add information to this section about the time you've taken for this task along with a professional changelist.>
+I spent about 4 hours on this task. Here is a list of changes I made:
+
+1. Compiler error fixes
+2. Shift GameManager getter definitions to header file
+3. Clean up unused imports
+4. Implement multicoloured bricks (each row has unique colour)
+5. Update paddle to follow mouse pointer
+6. Implement screen shake when taking damage
+7. Add background music, sound effect for taking damage, and sound effect for breaking bricks (which increases in pitch for each brick broken)
