@@ -22,6 +22,7 @@ public:
     void powerupEffect(POWERUPS pu, float t);
 
     Paddle* getPaddle() const { return _paddle; }
+    AudioManager* getAudioManager() const { return _audioManager; }
     BrickManager* getBrickManager() const { return _brickManager; }
     PowerupManager* getPowerupManager() const { return _powerupManager; }
     sf::RenderWindow* getWindow() const { return _window; }

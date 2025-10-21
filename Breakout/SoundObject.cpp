@@ -5,16 +5,13 @@ SoundObject::SoundObject()
     buffer = nullptr;
 }
 
-SoundObject::~SoundObject()
-{
-
-}
+SoundObject::~SoundObject() = default;
 
 // Loads sound into memory and can be identified by key (name).
-// Receives filepath and key name, loads sound file and stores alonside key
-void SoundObject::loadSound(std::string filename, std::string lname)
+// Receives filepath and key name, loads sound file and stores alongside key
+void SoundObject::loadSound(const std::string& filename, const std::string& lname)
 {
-    buffer = new sf::SoundBuffer();
+    buffer = std::make_unique<sf::SoundBuffer>();
     buffer->loadFromFile(filename);
     sound.setBuffer(*buffer);
     name = lname;

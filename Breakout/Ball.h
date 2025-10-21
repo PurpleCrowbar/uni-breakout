@@ -16,13 +16,15 @@ public:
     void setFireBall(float duration);
 
 private:
+    sf::RenderWindow* _window;
     sf::CircleShape _sprite;
     sf::Vector2f _direction;
-    sf::RenderWindow* _window;
     float _velocity;
     bool _isAlive;
     bool _isFireBall;
     float _timeWithPowerupEffect;
+    int _brickCombo;
+    const int _maxCombo = 12;
 
     GameManager* _gameManager;  // Reference to the GameManager
 

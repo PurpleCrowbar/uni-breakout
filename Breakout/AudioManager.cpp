@@ -5,8 +5,12 @@
 AudioManager::AudioManager()
 {
 	music.setLoop(true);
-	music.setVolume(50);
+	music.setVolume(40);
+    sounds.reserve(8);
 
+    addMusic("sfx/railjet.ogg", "main_theme");
+
+    addSound("sfx/coin.wav", "brick_break");
 	addSound("sfx/impact.wav", "impact");
 }
 
@@ -15,12 +19,10 @@ AudioManager::~AudioManager()
 }
 
 // Given a filename and key a new SOUND object is added to the list. Loading the object into memory for playback
-void AudioManager::addSound(std::string filename, std::string lname)
+void AudioManager::addSound(const std::string& filename, const std::string& lname)
 {
-	
-	sounds.push_back(s);
+	sounds.emplace_back();
 	sounds.back().loadSound(filename, lname);
-	
 }
 
 // Play back sound based on provided key.
@@ -45,7 +47,7 @@ void AudioManager::stopAllSounds()
 	}
 }
 
-sf::Sound* AudioManager::getSound(std::string lname)
+sf::Sound* AudioManager::getSound(const std::string& lname)
 {
 	for (int i = 0; i < sounds.size(); i++)
 	{
@@ -57,10 +59,11 @@ sf::Sound* AudioManager::getSound(std::string lname)
 	return nullptr;
 }
 
-void AudioManager::playSoundFromOffset(const std::string& lname, const sf::Time& offset) {
-	auto sound = getSound(lname);
-	sound->play();
-	sound->setPlayingOffset(offset);
+void AudioManager::playSoundFromOffset(const std::string& lname, const sf::Time& offset, const float& pitch) {
+    auto sound = getSound(lname);
+    sound->setPitch(pitch);
+    sound->play();
+    sound->setPlayingOffset(offset);
 }
 
 // Stores filename and key of music file. These are not loaded into memory but streamed when required.

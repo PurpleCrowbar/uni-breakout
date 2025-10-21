@@ -2,8 +2,8 @@
 #include "GameManager.h" // avoid cicular dependencies
 
 Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
-    : _window(window), _velocity(velocity), _gameManager(gameManager),
-    _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1})
+    : _window(window), _direction({1,1}), _velocity(velocity), _isAlive(true), _isFireBall(false), 
+    _timeWithPowerupEffect(0.f), _brickCombo(0), _gameManager(gameManager)
 {
     _sprite.setRadius(RADIUS);
     _sprite.setFillColor(sf::Color::Cyan);
@@ -65,6 +65,7 @@ void Ball::update(float dt)
         _sprite.setPosition(0, 300);
         _direction = { 1, 1 };
         _gameManager->loseLife();
+        _brickCombo = 0;
     }
 
     // collision with paddle
@@ -77,10 +78,19 @@ void Ball::update(float dt)
 
         // Adjust position to avoid getting stuck inside the paddle
         _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
+
+        _brickCombo = 0;
     }
 
     // collision with bricks
     int collisionResponse = _gameManager->getBrickManager()->checkCollision(_sprite, _direction);
+    
+    if (collisionResponse == 0) return; // No collisions
+
+    _brickCombo = std::min(_brickCombo + 1, _maxCombo);
+    _gameManager->getAudioManager()->playSoundFromOffset(
+        "brick_break", sf::seconds(0.1f), std::min(1.0f + 0.07f * _brickCombo, 2.0f)
+    );
     if (_isFireBall) return; // no collisisons when in fireBall mode.
     if (collisionResponse == 1)
     {

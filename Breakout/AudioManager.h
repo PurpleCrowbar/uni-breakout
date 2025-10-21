@@ -16,15 +16,15 @@ public:
     ~AudioManager();
 	
     // Add sound object, provide file path and key string
-    void addSound(std::string filename, std::string lname);
+    void addSound(const std::string& filename, const std::string& lname);
     // Plays sound based on key string provided (if sound exists).
     void playSoundbyName(std::string lname);
     // Stops playing all sounds (multiple sfx's can be played simultaneously
     void stopAllSounds();
     // Returns the sound object (based on key string). Can be useful for tracking play state, looping, volume etc.
-    sf::Sound* getSound(std::string lname);
+    sf::Sound* getSound(const std::string& lname);
     // Plays sound from an offset, as offset of sound is only applied to an already-playing sound.
-    void playSoundFromOffset(const std::string& lname, const sf::Time& offset);
+    void playSoundFromOffset(const std::string& lname, const sf::Time& offset, const float& pitch = 1.f);
 
     // Add music object, provide file path and key string.
     void addMusic(std::string filename, std::string lname);
@@ -42,7 +42,4 @@ private:
     std::vector<MusicObject> musics;
     // Single Music object as the stream cannot be copied.
     sf::Music music;
-    // Re-useable sound object
-    SoundObject s;
 };
-

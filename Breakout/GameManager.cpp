@@ -32,6 +32,10 @@ void GameManager::initialize()
 
 void GameManager::update(float dt)
 {
+    if (_audioManager->getMusic()->getStatus() == sf::SoundSource::Stopped)
+    {
+        _audioManager->playMusicbyName("main_theme");
+    }
     _powerupInEffect = _powerupManager->getPowerupInEffect();
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
