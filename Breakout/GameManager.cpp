@@ -62,11 +62,10 @@ void GameManager::update(float dt)
 
             // get rand float between 0 and 1, subtract 0.5 so now between -0.5 and +0.5, and double to get range
             // between -1 and +1. Then multiply by currentMagnitude to get diminishing shake offset
-            float offsetX = (std::rand() % 100 / 100.f - 0.5f) * 2 * currentMagnitude;
-            float offsetY = (std::rand() % 100 / 100.f - 0.5f) * 2  * currentMagnitude;
+            float offset = (std::rand() % 100 / 100.f - 0.5f) * 2 * currentMagnitude;
 
             sf::View shakenView = _originalView;
-            shakenView.move(offsetX, offsetY);
+            shakenView.move(offset, offset);
             _window->setView(shakenView);
         }
         else

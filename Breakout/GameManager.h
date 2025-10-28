@@ -39,8 +39,8 @@ private:
     std::pair<POWERUPS, float> _powerupInEffect;
     // Screen shake
     bool _isShaking;
-    float _shakeDuration; // total time to shake
-    float _shakeDurationRemaining; // time shaken so far
+    float _shakeDuration;
+    float _shakeDurationRemaining;
     float _shakeMagnitude;
     sf::View _originalView;
 
